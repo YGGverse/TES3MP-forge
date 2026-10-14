@@ -7,18 +7,13 @@ ARG BUILD_THREADS=4
 ENV PATH=/usr/local/bin:$PATH
 ENV LD_LIBRARY_PATH=/usr/local/lib64:/usr/local/lib
 
-# Use the Debian archive (buster) and disable Valid-Until checks
 RUN printf 'Acquire::Check-Valid-Until "false";\n' > /etc/apt/apt.conf.d/99no-check-valid-until \
  && cat > /etc/apt/sources.list <<'EOF'
-
 deb http://archive.debian.org/debian buster main contrib non-free
 deb-src http://archive.debian.org/debian buster main contrib non-free
 
 deb http://archive.debian.org/debian-security buster/updates main contrib non-free
 deb-src http://archive.debian.org/debian-security buster/updates main contrib non-free
-
-deb http://archive.debian.org/debian buster-updates main contrib non-free
-deb-src http://archive.debian.org/debian buster-updates main contrib non-free
 
 deb http://archive.debian.org/debian buster-backports main contrib non-free
 deb-src http://archive.debian.org/debian buster-backports main contrib non-free
@@ -34,7 +29,7 @@ RUN apt-get update -o Acquire::Check-Valid-Until=false \
  && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update -o Acquire::Check-Valid-Until=false \
-    && apt-get -y build-dep \
+    && apt-get -y --fix-missing build-dep \
         libmygui-dev \
     && apt-get -y install \
         libfreetype6-dev \
@@ -77,7 +72,7 @@ RUN git clone https://github.com/bulletphysics/bullet3.git bullet \
     && rm -rf /tmp/bullet
 
 RUN apt-get update -o Acquire::Check-Valid-Until=false \
-    && apt-get -y build-dep \
+    && apt-get -y --fix-missing build-dep \
         libopenscenegraph-3.4-dev \
     && cd /tmp \
     && git clone -b 3.6 https://github.com/OpenMW/osg.git \
@@ -112,25 +107,20 @@ ENV LD_LIBRARY_PATH=/usr/local/lib64:/usr/local/lib
 
 COPY --from=builder /usr/local /usr/local
 
-# Use the Debian archive (buster) and disable Valid-Until checks
 RUN printf 'Acquire::Check-Valid-Until "false";\n' > /etc/apt/apt.conf.d/99no-check-valid-until \
  && cat > /etc/apt/sources.list <<'EOF'
-
 deb http://archive.debian.org/debian buster main contrib non-free
 deb-src http://archive.debian.org/debian buster main contrib non-free
 
 deb http://archive.debian.org/debian-security buster/updates main contrib non-free
 deb-src http://archive.debian.org/debian-security buster/updates main contrib non-free
 
-deb http://archive.debian.org/debian buster-updates main contrib non-free
-deb-src http://archive.debian.org/debian buster-updates main contrib non-free
-
 deb http://archive.debian.org/debian buster-backports main contrib non-free
 deb-src http://archive.debian.org/debian buster-backports main contrib non-free
 EOF
 
 RUN apt-get update -o Acquire::Check-Valid-Until=false \
- && apt-get -y --no-install-recommends install \
+ && apt-get -y --fix-missing --no-install-recommends install \
         build-essential \
         ca-certificates \
         cmake/buster-backports \
@@ -164,8 +154,6 @@ RUN git config --global user.email "nwah@mail.com" \
     && git config --global user.name "N'Wah" \
     && git clone https://github.com/oooo-ps/TES3MP-deploy.git /deploy \
     && cd /deploy \
-    && git checkout eff7939777f4559af555fea1bde6af16a4b7fdd1 \
-    && cd .. \
     && mkdir /build
 
 VOLUME [ "/build" ]

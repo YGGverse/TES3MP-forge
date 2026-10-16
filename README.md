@@ -40,7 +40,7 @@ docker run --rm --entrypoint bash oooo-ps/tes3mp-forge -c '
 Setup game asset:
 
 ``` bash
-./tes3mp-wizard
+./openmw-wizard
 ```
 
 Play:

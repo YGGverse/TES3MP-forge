@@ -16,27 +16,6 @@ docker run --rm -it -v /tmp/TES3MP:/build oooo-ps/tes3mp-forge
 ```
 * unpack `/tmp/TES3MP/*.tar.gz` to destination
 
-Add missed libs from the container, e.g. on Fedora 44:
-
-``` deps.sh
-docker run --rm --entrypoint bash oooo-ps/tes3mp-forge -c '
-    files=(
-        libavformat.so.58 libavutil.so.56 libswresample.so.3 libvpx.so.5
-        libwebp.so.6 libcrystalhd.so.3 libaom.so.0 libcodec2.so.0.8.1
-        libshine.so.3 libx264.so.155 libx265.so.165 libpcre.so.3 libsndio.so.7.0
-        libavcodec.so.58 libswscale.so.5 libbluray.so.2 libssh-gcrypt.so.4
-    )
-    paths=()
-    for f in "${files[@]}"; do
-        if [ -f "/usr/lib/$f" ]; then paths+=("/usr/lib/$f")
-        elif [ -f "/usr/lib/x86_64-linux-gnu/$f" ]; then paths+=("/usr/lib/x86_64-linux-gnu/$f")
-        elif [ -f "/lib/x86_64-linux-gnu/$f" ]; then paths+=("/lib/x86_64-linux-gnu/$f")
-        fi
-    done
-    tar -chf - "${paths[@]}" 2>/dev/null
-' | tar -xf - -C ./lib --strip-components=3 --no-same-permissions
-```
-
 Setup game asset:
 
 ``` bash

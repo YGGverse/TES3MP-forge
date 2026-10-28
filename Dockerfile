@@ -152,7 +152,7 @@ RUN apt-get update -o Acquire::Check-Valid-Until=false \
 
 RUN git config --global user.email "nwah@mail.com" \
     && git config --global user.name "N'Wah" \
-    && git clone https://github.com/oooo-ps/TES3MP-deploy.git /deploy \
+    && git clone https://github.com/YGGverse/TES3MP-deploy.git /deploy \
     && cd /deploy \
     && mkdir /build
 

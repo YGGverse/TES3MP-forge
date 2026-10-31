@@ -16,13 +16,35 @@ docker run --rm -it -v /tmp/TES3MP:/build yggverse/tes3mp-forge
 ```
 * unpack `/tmp/TES3MP/*.tar.gz` to destination
 
-Setup game asset:
+## Setup game asset
 
 ``` bash
 ./openmw-wizard
 ```
 
-Play:
+## Setup connection
+
+`tes3mp-client-default.cfg`:
+
+``` tes3mp-client-default.cfg
+[General]
+destinationAddress = 202:68d0:f0d5:b88d:1d1a:555e:2f6b:3148
+..
+[Master]
+address = localhost
+```
+
+`tes3mp-server-default.cfg`:
+
+``` tes3mp-server-default.cfg
+[General]
+localAddress = 202:68d0:f0d5:b88d:1d1a:555e:2f6b:3148
+..
+[MasterServer]
+enabled = false
+```
+
+## Play
 
 ``` bash
 ./tes3mp
